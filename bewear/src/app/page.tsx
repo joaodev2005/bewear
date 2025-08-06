@@ -1,9 +1,11 @@
-
+import { Authetication } from "./authetication/page";
 
 export default function Home() {
   return (
     <>
-      <h1>Home</h1>
+      <main className="flex min-h-screen flex-col items-center justify-center p-24">
+        <Authetication />
+      </main>
     </>
   );
 }
