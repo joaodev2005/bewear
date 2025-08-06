@@ -51,7 +51,7 @@ const SignUpForm = () => {
                 onError: (error) => {
                     if (error.error.code === "USER_ALREADY_EXISTS") {
                         toast.error("Usuário já existe")
-                        form.setError("email", {
+                        return form.setError("email", {
                             message: error.error.message
                         });
                     }
