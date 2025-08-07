@@ -20,7 +20,7 @@ export default function Authetication() {
           <TabsList>
             <TabsTrigger value="sign-in">Entrar</TabsTrigger>
             <TabsTrigger value="sign-up">Criar conta</TabsTrigger>
-          </TabsList>
+          </TabsList>      
           <TabsContent value="sign-in" className="w-full">
             <SignInForm />
           </TabsContent>
