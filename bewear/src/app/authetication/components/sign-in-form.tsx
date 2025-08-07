@@ -58,7 +58,7 @@ const SignInForm = () => {
 
     return (
         <>
-            <Card>
+            <Card className="w-full max-w-sm">
                 <CardHeader>
                     <CardTitle>Entrar</CardTitle>
                     <CardDescription>
