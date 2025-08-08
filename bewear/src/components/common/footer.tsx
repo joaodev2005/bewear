@@ -1,0 +1,12 @@
+import React from 'react'
+
+const Footer = () => {
+    return (
+        <div className='bg-accent w-full gap-1 p-8'>
+            <p className='text-xs font-medium'>Copyright © 2025 BEWEAR</p>
+            <p className='text-muted text-xs font-medium'>Todos os direitos reservados</p>
+        </div>
+    )
+}
+
+export default Footer
