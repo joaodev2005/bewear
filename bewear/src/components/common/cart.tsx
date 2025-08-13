@@ -72,7 +72,9 @@ const Cart = () => {
                                 <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
                             </div>
 
-                            <Button className='w-full rounded-full' size='lg'>
+                            <Separator />
+
+                            <Button className='rounded-full' size='lg'>
                                 Finalizar compra
                             </Button>
                         </div>
