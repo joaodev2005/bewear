@@ -2,6 +2,7 @@
 
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button'
@@ -11,12 +12,16 @@ import { useFinishOrder } from '@/hooks/mutations/use-finish-order';
 const FinishOrderButton = () => {
     const [successDialogIsOpen, setSuccessDialogIsOpen] = useState(false);
     const finishOrderMutation = useFinishOrder();
+    const handleFinishOrder = () => {
+        finishOrderMutation.mutate();
+        setSuccessDialogIsOpen(true);
+    }
     return (
         <>
             <Button
                 className='w-full rounded-full'
                 size={"lg"}
-                onClick={() => finishOrderMutation.mutate()}
+                onClick={handleFinishOrder}
                 disabled={finishOrderMutation.isPending}
             >
                 {finishOrderMutation.isPending && (
@@ -41,8 +46,8 @@ const FinishOrderButton = () => {
 
                     <DialogFooter>
                         <Button className='rounded-full' size={"lg"}>Ver meus pedidos</Button>
-                        <Button variant="outline" className='rounded-full' size={"lg"}> 
-                            Voltar para a loja
+                        <Button variant="outline" className='rounded-full' size={"lg"} asChild> 
+                            <Link href="/">Voltar para a loja</Link>
                         </Button>
                     </DialogFooter>
                 </DialogContent>

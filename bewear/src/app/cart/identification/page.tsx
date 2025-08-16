@@ -63,7 +63,7 @@ const IdentificationPage = async () => {
                         variantName: item.productVariant.name,
                         quantity: item.quantity,
                         priceInCents: item.productVariant.priceInCents,
-                        imageUrl: item.productVariant.product.ImageUrl,
+                        imageUrl: item.productVariant.imageUrl
                     }))}
                 />
             </div>
