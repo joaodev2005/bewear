@@ -1,59 +1,50 @@
 "use client";
 
-import { Loader2 } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
+import { loadStripe } from "@stripe/stripe-js";
+import { Loader2 } from "lucide-react";
 
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '@/components/ui/dialog';
-import { useFinishOrder } from '@/hooks/mutations/use-finish-order';
+import { createCheckoutSession } from "@/actions/create-checkout-session";
+import { Button } from "@/components/ui/button";
+import { useFinishOrder } from "@/hooks/mutations/use-finish-order";
 
 const FinishOrderButton = () => {
-    const [successDialogIsOpen, setSuccessDialogIsOpen] = useState(false);
     const finishOrderMutation = useFinishOrder();
-    const handleFinishOrder = () => {
-        finishOrderMutation.mutate();
-        setSuccessDialogIsOpen(true);
-    }
+    const handleFinishOrder = async () => {
+        if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+            throw new Error("Stripe publishable key is not set");
+        }
+        const { orderId } = await finishOrderMutation.mutateAsync();
+        if (!orderId) {
+            throw new Error("Order ID is not set");
+        }
+        const checkoutSession = await createCheckoutSession({
+            orderId,
+        });
+        const stripe = await loadStripe(
+            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+        );
+        if (!stripe) {
+            throw new Error("Failed to load Stripe");
+        }
+        await stripe.redirectToCheckout({
+            sessionId: checkoutSession.id,
+        });
+    };
     return (
         <>
             <Button
-                className='w-full rounded-full'
-                size={"lg"}
+                className="w-full rounded-full"
+                size="lg"
                 onClick={handleFinishOrder}
                 disabled={finishOrderMutation.isPending}
             >
                 {finishOrderMutation.isPending && (
-                    <Loader2 className="h-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                 )}
-                Finalizar pedido
+                Finalizar compra
             </Button>
-
-            <Dialog open={successDialogIsOpen} onOpenChange={setSuccessDialogIsOpen}>
-                <DialogContent className='text-center'>
-                    <Image
-                        src="/ilustrator.png"
-                        alt="Pedido realizado com sucesso"
-                        width={300}
-                        height={300}
-                        className="mx-auto mb-4"
-                    />
-                    <DialogTitle className="text-2xl mt-4">Pedido realizado com sucesso!</DialogTitle>
-                    <DialogDescription className='font-medium'>
-                        Seu pedido foi realizado com sucesso! Você receberá um e-mail com os detalhes do seu pedido em breve.
-                    </DialogDescription>
-
-                    <DialogFooter>
-                        <Button className='rounded-full' size={"lg"}>Ver meus pedidos</Button>
-                        <Button variant="outline" className='rounded-full' size={"lg"} asChild> 
-                            <Link href="/">Voltar para a loja</Link>
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
         </>
-    )
-}
+    );
+};
 
-export default FinishOrderButton
+export default FinishOrderButton;
