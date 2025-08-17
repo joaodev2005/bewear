@@ -33,8 +33,8 @@ const CheckoutSuccessPage = () => {
           </DialogDescription>
 
           <DialogFooter>
-            <Button className="rounded-full" size="lg">
-              Ver meus pedidos
+            <Button className="rounded-full" size="lg" asChild>
+              <Link href="/my-orders">Meus Pedidos</Link>
             </Button>
             <Button
               className="rounded-full"
